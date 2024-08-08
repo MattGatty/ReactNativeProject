@@ -241,5 +241,5 @@ For more details or to discuss further enhancements, feel free to contact me.
 ## Contact Information
 
 - **Email**: matthew.gatmaitan00@gmail.com
-- **LinkedIn**: [Your LinkedIn Profile](https://www.linkedin.com/in/matthew-gatmaitan)
-- **GitHub**: [Your GitHub Profile](https://https://github.com/MattGatty)
+- **LinkedIn**: [My LinkedIn Profile](https://www.linkedin.com/in/matthew-gatmaitan)
+- **GitHub**: [My GitHub Profile](https://https://github.com/MattGatty)
