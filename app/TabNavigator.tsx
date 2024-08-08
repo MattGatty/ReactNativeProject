@@ -1,9 +1,8 @@
-// TabNavigator.tsx
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import Index from './Index'; // Adjust import based on your file structure
-import Explore from './Explore'; // Adjust import based on your file structure
+import Index from './Index'; 
+import Explore from './Explore'; 
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 

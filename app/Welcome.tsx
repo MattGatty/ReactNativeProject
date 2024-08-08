@@ -1,8 +1,19 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
+type RootStackParamList = {
+  Welcome: undefined;
+  TabNavigator: undefined;
+};
 
-export default function WelcomeScreen({ navigation }) {
+type WelcomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Welcome'>;
+
+type Props = {
+  navigation: WelcomeScreenNavigationProp;
+};
+
+export default function WelcomeScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Text>Welcome to the App!</Text>

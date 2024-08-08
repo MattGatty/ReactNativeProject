@@ -1,8 +1,7 @@
-// layout.tsx
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Welcome from './Welcome'
-import TabNavigator from './TabNavigator'; // Adjust import based on your file structure
+import TabNavigator from './TabNavigator'; 
 
 const Stack = createStackNavigator();
 
