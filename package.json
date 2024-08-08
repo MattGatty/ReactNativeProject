@@ -1,6 +1,6 @@
 {
   "name": "reactnativesecond",
-  "main": "expo-router/entry",
+  "main": "C:/Users/matth/ReactNativeSecond/app/app.tsx",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",

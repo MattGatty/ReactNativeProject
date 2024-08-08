@@ -5,8 +5,9 @@ import Index from './Index';
 import Explore from './Explore'; 
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { TabParamList } from './ParamLists/NavigationTypes';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TabParamList>();
 
 export default function TabNavigator() {
   const colorScheme = useColorScheme();

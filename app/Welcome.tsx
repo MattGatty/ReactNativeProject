@@ -1,11 +1,7 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
-type RootStackParamList = {
-  Welcome: undefined;
-  TabNavigator: undefined;
-};
+import { RootStackParamList } from './ParamLists/NavigationTypes';
 
 type WelcomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Welcome'>;
 
