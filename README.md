@@ -3,15 +3,15 @@
 
 ## Overview
 
-This project is a React Native application that demonstrates the use of navigation, including stack and tab navigators. The app includes a welcome screen, a home screen, and an explore screen, with a clean and maintainable structure.
+This project is a React Native application that demonstrates the use of navigation, including stack and tab navigators. The app includes a welcome screen, an index screen, and an explore screen, with a clean and maintainable structure.
 
 ## Features
 
 - **Welcome Screen**: A landing screen that introduces the app and provides navigation to the main part of the app.
-- **Home Screen**: The main screen where primary content is displayed.
+- **Index Screen**: The main screen where primary content is displayed.
 - **Explore Screen**: An additional screen for exploring other features or content.
 - **Stack Navigator**: Manages the transition between the welcome screen and the main app.
-- **Tab Navigator**: Allows for easy navigation between the Home and Explore screens.
+- **Tab Navigator**: Allows for easy navigation between the Index and Explore screens.
 
 ## Technologies Used
 
@@ -23,42 +23,26 @@ This project is a React Native application that demonstrates the use of navigati
 ## Project Structure
 
 ```
-/your-project
-  /app
-    _layout.tsx
-    Index.tsx
+/ReactNativeProject
+  /screens
+    WelcomeScreen.tsx
     TabNavigator.tsx
+    Index.tsx
     Explore.tsx
-    Welcome.tsx
-    App.tsx
+  /ParamLists
+    NavigationTypes.ts
+  App.tsx
+  app.json
+  package.json
 ```
 
 ### File Descriptions
 
-- **App.tsx**: The entry point of the application that sets up the `NavigationContainer`.
-- **_layout.tsx**: Configures the stack navigator with the Welcome screen and the main tab navigator.
-- **TabNavigator.tsx**: Configures the bottom tab navigator with Home and Explore screens.
-- **Welcome.tsx**: Displays a welcome message and navigates to the main app.
+- **App.tsx**: The entry point of the application. It sets up the `NavigationContainer` and configures the stack navigator with the Welcome screen and the main tab navigator.
+- **TabNavigator.tsx**: Configures the bottom tab navigator with Index and Explore screens.
+- **WelcomeScreen.tsx**: Displays a welcome message and navigates to the main app.
 - **Index.tsx**: The home screen of the app.
 - **Explore.tsx**: The explore screen of the app.
-
-## How to Run the Project
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/your-repo.git
-   cd your-repo
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Start the project**:
-   ```bash
-   expo start
-   ```
 
 ## Example Code
 
@@ -67,43 +51,34 @@ This project is a React Native application that demonstrates the use of navigati
 ```tsx
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import Layout from './app/_layout';
+import Welcome from './Welcome'
+import TabNavigator from './TabNavigator'; 
+import { RootStackParamList } from './ParamLists/NavigationTypes';
+import { createStackNavigator } from '@react-navigation/stack';
+import { registerRootComponent } from 'expo';
 
-export default function App() {
+const Stack = createStackNavigator<RootStackParamList>();
+
+function App() {
   return (
     <NavigationContainer>
-      <Layout />
+      <Stack.Navigator initialRouteName="Welcome">
+        <Stack.Screen 
+        name="Welcome" 
+        component={Welcome}
+        options = {{headerShown: false}} 
+        />
+        <Stack.Screen 
+        name="TabNavigator" 
+        component={TabNavigator} 
+        options = {{headerShown: false}} 
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
-```
 
-### _layout.tsx
-
-```tsx
-import * as React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import WelcomeScreen from './screens/WelcomeScreen';
-import TabNavigator from './TabNavigator';
-
-const Stack = createStackNavigator();
-
-export default function Layout() {
-  return (
-    <Stack.Navigator initialRouteName="Welcome">
-      <Stack.Screen
-        name="Welcome"
-        component={WelcomeScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Main"
-        component={TabNavigator}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
-}
+registerRootComponent(App);
 ```
 
 ### TabNavigator.tsx
@@ -112,12 +87,13 @@ export default function Layout() {
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import HomeScreen from './screens/HomeScreen';
-import ExploreScreen from './screens/ExploreScreen';
-import { Colors } from './constants/Colors';
-import { useColorScheme } from './hooks/useColorScheme';
+import Index from './Index'; 
+import Explore from './Explore'; 
+import { Colors } from '@/constants/Colors';
+import { useColorScheme } from '@/hooks/useColorScheme';
+import { TabParamList } from './ParamLists/NavigationTypes';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TabParamList>();
 
 export default function TabNavigator() {
   const colorScheme = useColorScheme();
@@ -128,7 +104,7 @@ export default function TabNavigator() {
         tabBarIcon: ({ color, size, focused }) => {
           let iconName: keyof typeof Ionicons.glyphMap;
 
-          if (route.name === 'Home') {
+          if (route.name === 'Index') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Explore') {
             iconName = focused ? 'code-slash' : 'code-slash-outline';
@@ -138,32 +114,40 @@ export default function TabNavigator() {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         tabBarInactiveTintColor: 'gray',
         tabBarShowLabel: true,
         tabBarLabelPosition: 'below-icon',
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Home' }} />
-      <Tab.Screen name="Explore" component={ExploreScreen} options={{ title: 'Explore' }} />
+      <Tab.Screen name="Index" component={Index} options={{ title: 'Index' }} />
+      <Tab.Screen name="Explore" component={Explore} options={{ title: 'Explore' }} />
     </Tab.Navigator>
   );
 }
 ```
 
-### WelcomeScreen.tsx
+### Welcome.tsx
 
 ```tsx
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from './ParamLists/NavigationTypes';
 
-export default function WelcomeScreen({ navigation }) {
+type WelcomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Welcome'>;
+
+type Props = {
+  navigation: WelcomeScreenNavigationProp;
+};
+
+export default function WelcomeScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Text>Welcome to the App!</Text>
       <Button
         title="Go to App"
-        onPress={() => navigation.navigate('Main')}
+        onPress={() => navigation.navigate('TabNavigator')}
       />
     </View>
   );
@@ -178,13 +162,13 @@ const styles = StyleSheet.create({
 });
 ```
 
-### HomeScreen.tsx
+### Index.tsx
 
 ```tsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function HomeScreen() {
+export default function Index() {
   return (
     <View style={styles.container}>
       <Text>Home</Text>
@@ -201,13 +185,13 @@ const styles = StyleSheet.create({
 });
 ```
 
-### ExploreScreen.tsx
+### Explore.tsx
 
 ```tsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function ExploreScreen() {
+export default function Explore() {
   return (
     <View style={styles.container}>
       <Text>Explore</Text>
@@ -226,7 +210,7 @@ const styles = StyleSheet.create({
 
 ## Future Enhancements
 
-- **Integration with a backend service** to fetch dynamic data.
+- **Integration with MySQL Azure DB** to fetch dynamic data.
 - **Enhanced styling** using libraries like `styled-components` or `react-native-paper`.
 - **State management** using Redux or Context API.
 
