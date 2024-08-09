@@ -87,11 +87,12 @@ registerRootComponent(App);
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import Index from './Index'; 
-import Explore from './Explore'; 
+import Profile from './Profile'; 
+import About from './About'; 
+import WorkoutTemplet from './WorkoutTemplet';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { TabParamList } from './ParamLists/NavigationTypes';
+import { TabParamList } from '../ParamLists/NavigationTypes';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -104,24 +105,28 @@ export default function TabNavigator() {
         tabBarIcon: ({ color, size, focused }) => {
           let iconName: keyof typeof Ionicons.glyphMap;
 
-          if (route.name === 'Index') {
+          if (route.name === 'Profile') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Explore') {
-            iconName = focused ? 'code-slash' : 'code-slash-outline';
+          } else if (route.name === 'About') {
+            iconName = focused ? 'help-circle' : 'help-circle-outline';
+          } else if (route.name === 'WorkoutTemplet'){
+              iconName = focused ? 'accessibility' : 'accessibility-outline';
           } else {
             iconName = 'help-circle';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: Colors.light.tabIconSelected,
+        //tabBarActiveTintColor: 'blue',
+        tabBarInactiveTintColor: Colors.light.tabIconDefault,
         tabBarShowLabel: true,
         tabBarLabelPosition: 'below-icon',
       })}
     >
-      <Tab.Screen name="Index" component={Index} options={{ title: 'Index' }} />
-      <Tab.Screen name="Explore" component={Explore} options={{ title: 'Explore' }} />
+      <Tab.Screen name="Profile" component={Profile} options={{ title: 'Profile' }} />
+      <Tab.Screen name= "WorkoutTemplet" component={WorkoutTemplet} options={{ title: 'Workouts'}} />
+      <Tab.Screen name="About" component={About} options={{ title: 'About' }} />
     </Tab.Navigator>
   );
 }
@@ -130,10 +135,14 @@ export default function TabNavigator() {
 ### Welcome.tsx
 
 ```tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './ParamLists/NavigationTypes';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Picker } from '@react-native-picker/picker';
+import { Image } from 'react-native';
+
 
 type WelcomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Welcome'>;
 
@@ -142,24 +151,46 @@ type Props = {
 };
 
 export default function WelcomeScreen({ navigation }: Props) {
+  const [selectedProfile, setSelectedProfile] = useState<string | undefined>(undefined);
+
+  const handleProfileChange = (profile: string) => {
+    setSelectedProfile(profile);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Welcome to the App!</Text>
-      <Button
-        title="Go to App"
-        onPress={() => navigation.navigate('TabNavigator')}
-      />
-    </View>
+    <LinearGradient
+      colors={['white', 'grey']}
+      style={styles.container}
+    >
+       <View style={styles.container}>
+        <Image
+        source = {require('@/assets/images/Gymlogo.png')}
+        style={styles.logo}
+        />  
+        <View style = {styles.InnerContainer}>
+        <Text
+        style={styles.Text}
+        >Select or Create a Profile</Text>
+        <Picker
+          selectedValue={selectedProfile}
+          style={styles.picker}
+          onValueChange={(itemValue) => handleProfileChange(itemValue)}
+        >
+          <Picker.Item label="Create a new profile +" value={undefined} />
+          <Picker.Item label="Matthew" value="profile1" />
+          <Picker.Item label="Giselle" value="profile2" />
+          <Picker.Item label="Ebi" value="profile3" />
+        </Picker>
+        <Button
+          title="Confirm Selection"
+          onPress={() => navigation.navigate('TabNavigator')}
+        />
+        </View>  
+      </View>
+    </LinearGradient>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 ```
 
 ### Index.tsx
@@ -185,28 +216,6 @@ const styles = StyleSheet.create({
 });
 ```
 
-### Explore.tsx
-
-```tsx
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-
-export default function Explore() {
-  return (
-    <View style={styles.container}>
-      <Text>Explore</Text>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-```
 
 ## Future Enhancements
 
