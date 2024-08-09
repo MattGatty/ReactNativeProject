@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import Welcome from './Welcome'
-import TabNavigator from './TabNavigator'; 
+import TabNavigator from './(Tabs)/TabNavigator'; 
 import { RootStackParamList } from './ParamLists/NavigationTypes';
 import { createStackNavigator } from '@react-navigation/stack';
 import { registerRootComponent } from 'expo';

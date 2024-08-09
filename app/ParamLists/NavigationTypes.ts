@@ -4,6 +4,7 @@ export type RootStackParamList = {
   };
   
   export type TabParamList = {
-    Index: undefined;
-    Explore: undefined;
+    Profile: undefined;
+    WorkoutTemplet: undefined;
+    About: undefined;
   };
